@@ -1,38 +1,115 @@
 .item{
-    width: 250px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    width: 92%;
     height: 600px;
-    border: 1px solid white;
+    border: 1px solid #cccccc;
     margin: 14px;
+    border-radius: 5px;
+    box-shadow: 3px 3px 10px 1px;
   }
   .item:hover{
     border: 1px solid #CFD1D1;
     cursor: pointer;
+    background-color: #0091cd;
+    transform: scale(1.2);
+  }
+
+  .outerMain{
+    align-items: center;
+    width: 23%;
+  }
+
+  @media (min-width: 320px) and (max-width: 480px) {
+    .outerMain{
+      width: 85%;
+    }
+    .item{
+      height: 350px;
+    }
+  }
+
+  @media (min-width: 480px) and (max-width: 767px) {
+    .outerMain{
+      width: 46%;
+    }
+    .item{
+      height: 350px;
+    }
+  }
+
+  @media (min-width: 768px) and (max-width: 1024px) and (orientation: landscape) {
+    .outerMain{
+      width: 30%;
+    }
+    .item{
+      height: 400px;
+    }
+  }
+
+  @media (min-width: 768px) and (max-width: 1024px) {
+    .outerMain{
+      width: 30%;
+    }
+    .item{
+      height: 400px;
+    }
+  }
+
+  @media (min-width: 1025px) and (max-width: 1280px) {
+    .outerMain{
+      width: 23%;
+    }
+    .item{
+      height: 600px;
+    }
+  }
+
+  @media (min-width: 1281px) {
+    .outerMain{
+      width: 23%;
+    }
+    .item{
+      height: 600px;
+    }
   }
 
   .img{
-    margin-top: 15px;
-    width: 250px;
-    height: 350px;
+    display: block;
+    max-width: 100%;
+    max-height: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: auto;
+    margin-top: auto;
   }
 
   .p1{
     text-align: center;
     font-family: sans-serif;
+    /* height: 9%; */
+    justify-content: center;
+    align-items: center;
   }
 
   .sizesAvailable-container{
     display: flex;
-    padding-left: 56px;
+    max-width: 100%;
+    /* padding-left: 56px; */
+    text-align: center;
     flex-wrap: wrap;
     margin-bottom: 10px;
   }
 
   .btn{
-    display: block;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    flex-direction: row;
     width: 180px;
     height: 50px;
-    background-color: #012323;
-    color: white;
+    background-color: #cccccc;
     border: 0px;
     margin: 0 auto;
     cursor: pointer;

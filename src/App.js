@@ -1,157 +1,99 @@
 import React from 'react';
 import './App.css';
-import SizeChart from './components/SizeChart/index';
 import IndividualItem from './components/IndividualItem/index';
-import SortButton from './components/SortButton/index';
-import Cart from './components/Cart/index';
-import CartOpenButton from './components/CartOpenButton';
+import axios from 'axios';
 
 class App extends React.Component {
 
-  state = {
-    itemArray : [
-      {id : '1', img : 'https://react-shopping-cart-67954.firebaseapp.com/static/media/12064273040195392_1.2995d79a.jpg', name:'Cat Tee Black T-Shirt', price: '799', size: ['XS', 'S', 'ML'], quantity : 1},
-      {id : '2', img : 'https://react-shopping-cart-67954.firebaseapp.com/static/media/51498472915966370_1.df947f14.jpg', name:'Dark Thug Blue-Navy T-Shirt', price: '899', size: ['XS', 'XXL', 'L'], quantity : 1}, 
-      {id : '3', img : 'https://react-shopping-cart-67954.firebaseapp.com/static/media/10686354557628304_1.0d941b4c.jpg', name:'Sphynx Tie Dye Wine T-Shirt', price: '799', size: ['M', 'S', 'XL'], quantity : 1},
-      {id : '4', img : 'https://react-shopping-cart-67954.firebaseapp.com/static/media/11033926921508488_1.84c82a5a.jpg', name:'Skuul', price: '799', size: ['XS', 'S', 'XXL'], quantity : 1}, 
-      {id : '5', img : 'https://react-shopping-cart-67954.firebaseapp.com/static/media/39876704341265610_1.a313534c.jpg', name:'Wine Skul T-Shirt', price: '799', size: ['XS', 'XL', 'ML'], quantity : 1}, 
-      {id : '6', img : 'https://react-shopping-cart-67954.firebaseapp.com/static/media/8552515751438644_1.87b5353e.jpg', name:'Cat Tee Black T-Shirt', price: '1099', size: ['S', 'M', 'L'], quantity : 1}, 
-      {id : '7', img : 'https://react-shopping-cart-67954.firebaseapp.com/static/media/18644119330491310_1.75f51cec.jpg', name:'Sphynx Tie Dye Grey T-Shirt', price: '1299', size: ['XS', 'S', 'ML'], quantity : 1}, 
-      {id : '8', img : 'https://react-shopping-cart-67954.firebaseapp.com/static/media/11854078013954528_1.7faf6a31.jpg', name:'Danger Knife Grey', price: '899', size: ['S', 'M', 'L'], quantity : 1}, 
-      {id : '9', img : 'https://react-shopping-cart-67954.firebaseapp.com/static/media/876661122392077_1.df97d7c2.jpg', name:'White DGK Script Tee', price: '999', size: ['XS', 'XXL', 'ML'], quantity : 1}, 
-      {id : '10', img : 'https://react-shopping-cart-67954.firebaseapp.com/static/media/9197907543445676_1.59b64365.jpg', name:'Born On The Streets', price: '999', size: ['XS', 'S', 'M'], quantity : 1}, 
-      {id : '11', img : 'https://react-shopping-cart-67954.firebaseapp.com/static/media/10547961582846888_1.54fbf816.jpg', name:'Tso 3D Short Sleeve T-Shirt A', price: '999', size: ['XS', 'XXL', 'L'], quantity : 1}, 
-      {id : '12', img : 'https://react-shopping-cart-67954.firebaseapp.com/static/media/6090484789343891_1.45a051e0.jpg', name:'Man Tie Dye Cinza Grey T-Shirt', price: '999', size: ['S', 'M', 'L'], quantity : 1}, 
-      {id : '13', img : 'https://react-shopping-cart-67954.firebaseapp.com/static/media/18532669286405344_1.d78e2790.jpg', name:'Crazy Monkey Black T-Shirt', price: '999', size: ['XS', 'M', 'ML'], quantity : 1}, 
-      {id : '14', img : 'https://react-shopping-cart-67954.firebaseapp.com/static/media/5619496040738316_1.843a4713.jpg', name:'Tso 3D Black T-Shirt', price: '899', size: ['L', 'S', 'XXL'], quantity : 1}, 
-      {id : '15', img : 'https://react-shopping-cart-67954.firebaseapp.com/static/media/11600983276356164_1.06ec2c62.jpg', name:'Crazy Monkey Grey', price: '799', size: ['XS', 'M', 'ML'], quantity : 1}, 
-      {id : '16', img : 'https://react-shopping-cart-67954.firebaseapp.com/static/media/27250082398145996_1.4c799bac.jpg', name:'On The Streets Black T-Shirt', price: '799', size: ['XXL', 'S', 'ML'], quantity : 1}],
-    tempItemArray : [
-      {id : '1', img : 'https://react-shopping-cart-67954.firebaseapp.com/static/media/12064273040195392_1.2995d79a.jpg', name:'Cat Tee Black T-Shirt', price: '799', size: ['XS', 'S', 'ML'], quantity : 0},
-      {id : '2', img : 'https://react-shopping-cart-67954.firebaseapp.com/static/media/51498472915966370_1.df947f14.jpg', name:'Dark Thug Blue-Navy T-Shirt', price: '899', size: ['XS', 'XXL', 'L'], quantity : 0}, 
-      {id : '3', img : 'https://react-shopping-cart-67954.firebaseapp.com/static/media/10686354557628304_1.0d941b4c.jpg', name:'Sphynx Tie Dye Wine T-Shirt', price: '799', size: ['M', 'S', 'XL'], quantity : 0},
-      {id : '4', img : 'https://react-shopping-cart-67954.firebaseapp.com/static/media/11033926921508488_1.84c82a5a.jpg', name:'Skuul', price: '799', size: ['XS', 'S', 'XXL'], quantity : 0}, 
-      {id : '5', img : 'https://react-shopping-cart-67954.firebaseapp.com/static/media/39876704341265610_1.a313534c.jpg', name:'Wine Skul T-Shirt', price: '799', size: ['XS', 'XL', 'ML'], quantity : 0}, 
-      {id : '6', img : 'https://react-shopping-cart-67954.firebaseapp.com/static/media/8552515751438644_1.87b5353e.jpg', name:'Cat Tee Black T-Shirt', price: '1099', size: ['S', 'M', 'L'], quantity : 0}, 
-      {id : '7', img : 'https://react-shopping-cart-67954.firebaseapp.com/static/media/18644119330491310_1.75f51cec.jpg', name:'Sphynx Tie Dye Grey T-Shirt', price: '1299', size: ['XS', 'S', 'ML'], quantity : 0}, 
-      {id : '8', img : 'https://react-shopping-cart-67954.firebaseapp.com/static/media/11854078013954528_1.7faf6a31.jpg', name:'Danger Knife Grey', price: '899', size: ['S', 'M', 'L'], quantity : 0}, 
-      {id : '9', img : 'https://react-shopping-cart-67954.firebaseapp.com/static/media/876661122392077_1.df97d7c2.jpg', name:'White DGK Script Tee', price: '999', size: ['XS', 'XXL', 'ML'], quantity : 0}, 
-      {id : '10', img : 'https://react-shopping-cart-67954.firebaseapp.com/static/media/9197907543445676_1.59b64365.jpg', name:'Born On The Streets', price: '999', size: ['XS', 'S', 'M'], quantity : 0}, 
-      {id : '11', img : 'https://react-shopping-cart-67954.firebaseapp.com/static/media/10547961582846888_1.54fbf816.jpg', name:'Tso 3D Short Sleeve T-Shirt A', price: '999', size: ['XS', 'XXL', 'L'], quantity : 0}, 
-      {id : '12', img : 'https://react-shopping-cart-67954.firebaseapp.com/static/media/6090484789343891_1.45a051e0.jpg', name:'Man Tie Dye Cinza Grey T-Shirt', price: '999', size: ['S', 'M', 'L'], quantity : 0}, 
-      {id : '13', img : 'https://react-shopping-cart-67954.firebaseapp.com/static/media/18532669286405344_1.d78e2790.jpg', name:'Crazy Monkey Black T-Shirt', price: '999', size: ['XS', 'M', 'ML'], quantity : 0}, 
-      {id : '14', img : 'https://react-shopping-cart-67954.firebaseapp.com/static/media/5619496040738316_1.843a4713.jpg', name:'Tso 3D Black T-Shirt', price: '899', size: ['L', 'S', 'XXL'], quantity : 0}, 
-      {id : '15', img : 'https://react-shopping-cart-67954.firebaseapp.com/static/media/11600983276356164_1.06ec2c62.jpg', name:'Crazy Monkey Grey', price: '799', size: ['XS', 'M', 'ML'], quantity : 0}, 
-      {id : '16', img : 'https://react-shopping-cart-67954.firebaseapp.com/static/media/27250082398145996_1.4c799bac.jpg', name:'On The Streets Black T-Shirt', price: '799', size: ['XXL', 'S', 'ML'], quantity : 0}
-    ],
-    cartButton : false,
-    itemsInCart : [],
-  }
+  dataArr = [];
+  helperArr = [];
 
-  selectedItemHandler = (props) => {
-    const newArr = this.state.itemArray.filter((x) => {
-      const arr = x.size;
-      for(let i = 0; i<arr.length; i++){
-        if(arr[i] === props){
-          return true;
-        }
-      }
-      return null;
-    });
-    this.setState({tempItemArray : newArr});
-  }
-
-  increaseItemHandler = (props) => {
-  const newArr = [...this.state.tempItemArray];
-  newArr[props].quantity ++;
-  this.setState({tempItemArray : newArr});
-  } 
-
-  addItemInCartHandler = (props) => {
-    this.setState((prevState) => {
-      return(prevState.itemsInCart.push(props))
-    });
-  }
-
-  sortHandler = (props) => {
-    const newArr = [...this.state.tempItemArray];
-    if(props === 'Low to High'){
-      newArr.sort(function(a, b) {
-        return (Number(a.price) - Number(b.price)) 
-      });
-    }
-    else{
-       newArr.sort(function(a, b) {
-        return (Number(b.price) - Number(a.price)) 
-      });
-    }
-    
-    this.setState({tempItemArray : newArr})
-  }
-
-  decreaseQuantityHandler = (props) => {
-    const newArr = [...this.state.tempItemArray];
-    for(let i=0; i<newArr.length; i++){
-      if((newArr[i].id === props) && (newArr[i].quantity>0)){
-        newArr[i].quantity--;
-      }
-    }
-    this.setState({tempItemArray : newArr});
-  }
-
-  removeItemHandler = (props) => {
-    for(let i=0; i<this.state.itemsInCart.length; i++){
-      if((this.state.itemsInCart[i].id === props) && (this.state.itemsInCart[i].quantity === 0)){
-        this.setState((prevState) => {
-          return(prevState.itemsInCart.splice(i, 1))
+  componentDidMount = () => {
+    const newArr = [];
+    axios.get('https://gist.githubusercontent.com/bharadwajturlapati/4e81154dbcc7d6928921b96057fc5b4a/raw/d31da32d6e5c1dd2a11968d7e94d3c60dfd50fcb/products.json')
+        .then(response => {
+          this.setState({ mainData : response.data }, () => {
+            const { mainData } = this.state;
+            for(let i in response.data){
+              this.dataArr.push(i);
+              newArr.push(mainData[i]);
+             }
+             this.helperArr = [...newArr];
+             this.setState({ itemArr : [...newArr]});
+          });
         });
+  }
+
+  state = {
+    tab: 'ALL',
+    itemArr: [],
+    mainData: null,
+    cartButton : false,
+  }
+
+  itemFilterHandler = (key) => {
+    console.info(key);
+    switch(key){
+      case 'GENERAL': {
+        const { itemArr } = this.state;
+        if(this.helperArr.length === itemArr.length){
+          const tempArr = itemArr.filter(x => x.hub === 'general');
+          this.setState({ itemArr: [...tempArr], tab: 'GENERAL' });
+        } else {
+          this.setState({ itemArr: [...this.helperArr] }, () => {
+            const { itemArr } = this.state;
+            const tempArr = itemArr.filter(x => x.hub === 'general');
+            this.setState({ itemArr: [...tempArr], tab: 'GENERAL' });
+          });
+        }
+        
+        break;
+      }
+      case 'OTHERS': {
+        const { itemArr } = this.state;
+        if(this.helperArr.length === itemArr.length){
+          const { itemArr } = this.state;
+          const tempArr = itemArr.filter(x => x.hub !== 'general');
+          this.setState({ itemArr: [...tempArr], tab: 'OTHERS' });
+        } else {
+          this.setState({ itemArr: [...this.helperArr] }, () => {
+            const { itemArr } = this.state;
+            const tempArr = itemArr.filter(x => x.hub !== 'general');
+            this.setState({ itemArr: [...tempArr], tab: 'OTHERS' });
+          });
+        }
+        break;
+      }
+      case 'ALL': {
+        const { itemArr } = this.state;
+        this.setState({ itemArr : [...this.helperArr], tab: 'ALL'});
+        break;
+      }
+      default: {
+        console.info('Wrong Entry');
+        break;
       }
     }
-  }
-
-  openCartBoxHandler = () => {
-    this.setState((prevState) => {
-      return({cartButton : !prevState.cartButton})
-    });
-  }
-
-  closeCartHandler = () => {
-    this.setState((prevState) => {
-      return({cartButton : !prevState.cartButton})
-    });
   }
 
   render(){
-    const { cartButton } = this.state;
-    const sizeArray = [{id : 'XS'},{id : 'S'},{id : 'M'},{id : 'ML'},{id : 'L'},{id : 'XL'},{id : 'XXL'}];
-    const sizes = sizeArray.map((x) => <SizeChart item={x.id} clicked={() => this.selectedItemHandler(x.id)}/>);
-    const items = this.state.tempItemArray.map((x, index) => <IndividualItem item={x.img} name={x.name} price={x.price} size={x.size} clicked1={() => {
-        this.increaseItemHandler(index) 
-        this.addItemInCartHandler(x)
-      }}
-    />);
-    const sortItems = [{id : 'Popularity'}, {id : 'Low to High'}, {id : 'High to Low'}];
-    const sortButtons = sortItems.map((x) => <SortButton item={x.id} clicked={() => this.sortHandler(x.id)}/>);
+    const { tab } = this.state;
+    const items = this.state.itemArr.map((x, index) => <IndividualItem keys={x.key} item={x.image} name={x.name} author={x.author} description={x.description}/>);
     return(
       <div>
-          { cartButton ? <Cart closeCart={this.closeCartHandler} clicked={this.state.cartButton} cartItem={this.state.itemsInCart} click2={(props) => {
-              this.decreaseQuantityHandler(props)
-              this.removeItemHandler(props)}}
-          /> : null }
-          <header style={{ width: '100%', height: 100, justifyContent: 'center', alignItems: 'center', backgroundColor: '#012323'}}>
-              <CartOpenButton itemCount={this.state.itemsInCart.length} clicked={this.openCartBoxHandler}/>
-          </header>
+          <header style={{ width: '100%', height: 100, justifyContent: 'center', alignItems: 'center', backgroundColor: '#012323'}}/>
           <div class="main">
-            <div class="left">
-              <p class = "left-p">Filter By Sizes:</p>
-              <hr></hr>
-              <div class="size-container">{sizes}</div>
-              <p class="left-p">Order Items By: </p>
-              <hr></hr>
-              {sortButtons}
+            <div className={"buttonHolder"}>
+              <button onClick={() => this.itemFilterHandler('ALL')} style={{backgroundColor: tab === 'ALL' ? '#0091cd' : null}} className="sortButtons">ALL</button>
+              <div style={{ width: '10%'}} />
+              <button onClick={() => this.itemFilterHandler('OTHERS')} style={{ backgroundColor: tab === 'OTHERS' ? '#0091cd' : null}} className="sortButtons">OTHERS</button>
+              <div style={{ width: '10%'}} />
+              <button onClick={() => this.itemFilterHandler('GENERAL')} style={{ backgroundColor: tab === 'GENERAL' ? '#0091cd' : null}} className="sortButtons">GENERAL</button>
             </div>
-            <div class="right">
-              <div class="item-container">{items}</div>
+            <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center'}}>
+              <div class="right">
+                <div class="item-container">{items}</div>
+              </div>
             </div>
           </div>
       </div>
