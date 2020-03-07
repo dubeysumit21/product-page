@@ -10,8 +10,9 @@ class App extends React.Component {
 
   componentDidMount = () => {
     const newArr = [];
-    axios.get('https://gist.githubusercontent.com/bharadwajturlapati/4e81154dbcc7d6928921b96057fc5b4a/raw/d31da32d6e5c1dd2a11968d7e94d3c60dfd50fcb/products.json')
+    axios.get('http://starlord.hackerearth.com/TopRamen')
         .then(response => {
+          console.info('response', response);
           this.setState({ mainData : response.data }, () => {
             const { mainData } = this.state;
             for(let i in response.data){
@@ -19,7 +20,7 @@ class App extends React.Component {
               newArr.push(mainData[i]);
              }
              this.helperArr = [...newArr];
-             this.setState({ itemArr : [...newArr]});
+             this.setState({ itemArr : [...newArr]}, () => this.manipulateData());
           });
         });
   }
@@ -29,6 +30,72 @@ class App extends React.Component {
     itemArr: [],
     mainData: null,
     cartButton : false,
+    yearArray : null,
+    countryArray: null,
+  }
+
+  manipulateData = () => {
+    const { itemArr } = this.state;
+    // for(let i=0; i< itemArr.length; i++){
+    //   itemArr
+    // }
+    const tempArr = itemArr.map(im  => {
+      return {
+        ...im,
+        year: im['Top Ten'].split(' ')[0],
+        rank: im['Top Ten'].split(' ')[1] && im['Top Ten'].split(' ')[1].substring(1,3),
+      };
+    });
+    this.helperArr = [...tempArr];
+    this.setState({ itemArr: [...tempArr] }, () => {
+      this.setYearList();
+      this.setCountryList();
+    });
+
+  }
+
+  setYearList = () => {
+    const array = [...this.state.itemArr];
+    const outputArray = [];
+    var count = 0;
+    var start = false; 
+    for (let j = 0; j < array.length; j++) { 
+      for (let k = 0; k < outputArray.length; k++) { 
+          if ( array[j].year === outputArray[k].year ) { 
+              start = true; 
+          } 
+      } 
+      count++; 
+      if (count === 1 && start === false) { 
+          outputArray.push(array[j]); 
+      } 
+      start = false; 
+      count = 0; 
+  }
+  const sortedArray = outputArray.sort((a, b) => Number(a) - Number(b));
+  this.setState({ yearArray: sortedArray});
+  }
+
+  setCountryList = () => {
+    const array = [...this.state.itemArr];
+    const outputArray = [];
+    var count = 0;
+    var start = false; 
+    for (let j = 0; j < array.length; j++) { 
+      for (let k = 0; k < outputArray.length; k++) { 
+          if ( array[j].Country === outputArray[k].Country ) { 
+              start = true; 
+          } 
+      } 
+      count++; 
+      if (count === 1 && start === false) { 
+          outputArray.push(array[j]); 
+      } 
+      start = false; 
+      count = 0; 
+  }
+  const sortedArray = outputArray.sort((a, b) => Number(a) - Number(b));
+  this.setState({ countryArray: sortedArray});
   }
 
   itemFilterHandler = (key) => {
@@ -76,19 +143,57 @@ class App extends React.Component {
     }
   }
 
+  sortHandler = year => {
+    const { itemArr } = this.state;
+    if(this.helperArr.length === itemArr.length){
+      const tempArray = itemArr.filter(im => im.year === year);
+      const sortedArray = tempArray.sort((a, b) => Number(a.rank)-Number(b.rank));
+      this.setState({itemArr: [...sortedArray]});
+    } else {
+      this.setState({ itemArr: [...this.helperArr]}, () => {
+        const { itemArr } = this.state;
+        const tempArray = itemArr.filter(im => im.year === year);
+        const sortedArray = tempArray.sort((a, b) => Number(a.rank)-Number(b.rank));
+        this.setState({itemArr: [...sortedArray]});
+      })
+    }
+  }
+
+  countrySelectorHandler = e => {
+    const { itemArr } = this.state;
+    if(this.helperArr.length === itemArr.length){
+      const tempArray = itemArr && itemArr.filter(im => im.Country === e.target.value);
+      this.setState({itemArr: [...tempArray]});
+    } else {
+      this.setState({ itemArr: [...this.helperArr]}, () => {
+        const { itemArr } = this.state;
+        const tempArray = itemArr && itemArr.filter(im => im.Country === e.target.value);
+        this.setState({itemArr: [...tempArray]});
+      })
+    }
+  } 
+    
+
   render(){
-    const { tab } = this.state;
-    const items = this.state.itemArr.map((x, index) => <IndividualItem keys={x.key} item={x.image} name={x.name} author={x.author} description={x.description}/>);
+    const { tab, yearArray, countryArray } = this.state;
+    const items = this.state.itemArr.map((x, index) => <IndividualItem year={x.year} rank={x.rank} starRating={x.Stars} style={x.Style} keys={x.key} item={x.image} name={x.Brand} author={x.Country} description={x.Variety}/>);
+    const yearList = yearArray && yearArray.map(ya => 
+    <div style={{ justifyContent: 'center', alignItems: 'center' }}>
+        <button onClick={() => this.sortHandler(ya.year)} style={{ backgroundColor: tab === 'GENERAL' ? '#0091cd' : null}} className="sortButtons">{ya.year}</button>
+    </div>);
     return(
       <div>
           <header style={{ width: '100%', height: 100, justifyContent: 'center', alignItems: 'center', backgroundColor: '#012323'}}/>
           <div class="main">
             <div className={"buttonHolder"}>
-              <button onClick={() => this.itemFilterHandler('ALL')} style={{backgroundColor: tab === 'ALL' ? '#0091cd' : null}} className="sortButtons">ALL</button>
-              <div style={{ width: '10%'}} />
-              <button onClick={() => this.itemFilterHandler('OTHERS')} style={{ backgroundColor: tab === 'OTHERS' ? '#0091cd' : null}} className="sortButtons">OTHERS</button>
-              <div style={{ width: '10%'}} />
-              <button onClick={() => this.itemFilterHandler('GENERAL')} style={{ backgroundColor: tab === 'GENERAL' ? '#0091cd' : null}} className="sortButtons">GENERAL</button>
+              <h6>Sort by Ranking in the Year: </h6>
+              {yearList}
+            </div>
+            <div className={"buttonHolder"}>
+              <h6>Sort by Country: </h6>
+              <select onChange={(e) => this.countrySelectorHandler(e)} style={{ height: '30px', width: '50%', marginLeft: '20px' }}>
+                {countryArray && countryArray.map(ca => <option>{ca.Country}</option>)}
+              </select>
             </div>
             <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center'}}>
               <div class="right">
